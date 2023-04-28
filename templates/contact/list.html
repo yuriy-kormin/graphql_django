@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+</head>
+<body>
+<table>
+    <thead><tr>
+        <th>ID</th>
+        <th>name</th>
+        <th>phone</th>
+    </tr>
+    </thead>
+    <tbody id="table-body">
+    </tbody>
+</table>
+  <script>
+    fetch('/graphql', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        query: `
+          query {
+            listing {
+              id
+              name
+              phoneNumber
+            }
+          }
+        `
+      }),
+    })
+    .then(r => r.json())
+    .then(data => {
+      const contactList = document.getElementById('table-body');
+      console.log(data)
+      data.data.listing.forEach(contact => {
+        const tr = document.createElement('tr');
+        const tdId = document.createElement('td');
+        tdId.textContent = contact.id;
+        const tdName = document.createElement('td');
+        tdName.textContent = contact.name;
+        const tdPhone = document.createElement('td');
+        tdPhone.textContent = contact.phoneNumber;
+        tr.appendChild(tdId);
+        tr.appendChild(tdName);
+        tr.appendChild(tdPhone);
+        contactList.appendChild(tr);
+      });
+    });
+  </script>
+</body>
