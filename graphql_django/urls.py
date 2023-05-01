@@ -15,15 +15,22 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, reverse_lazy
 from django.views.decorators.csrf import csrf_exempt
-from graphene_django.views import GraphQLView #View for the user interface
+from graphene_django.views import GraphQLView  # View for the user interface
 from .contact.schema import schema
-
+# from graphql_django.users.views import LoginView, LogoutView
+from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("graphql", csrf_exempt(
         GraphQLView.as_view(graphiql=True, schema=schema))),
-    path('contact', include('graphql_django.contact.urls'))
+    path('contact', include('graphql_django.contact.urls')),
+    path('login/', LoginView.as_view(
+        template_name='login.html',
+        next_page=reverse_lazy('contact_list')
+    ),
+         name='login'),
+    path('logout/', LogoutView.as_view(next_page=reverse_lazy('contact_list'))),
 ]
