@@ -38,8 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'graphql_django.contact',
+    'graphql_django.users',
     'django_extensions',
     'graphene_django',
+
 ]
 
 MIDDLEWARE = [
@@ -129,3 +131,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 GRAPHENE = {
     "SCHEMA": "graphql_django.schema.schema"
 }
+
+AUTH_USER_MODEL = 'users.User'
